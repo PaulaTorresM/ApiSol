@@ -8,7 +8,7 @@ const albumSchema = new Schema({
     estadoAlbum: String,
 
     genero:[{
-      type:Schema.Types.Number,
+      type:Schema.Types.ObjectId,
       ref:'Genero'
     }]
     

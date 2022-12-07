@@ -6,11 +6,11 @@ exports.obtener = async (req, res) => {
   try {
     const cancion = await Cancion.find().populate('album',{
 
-      "_id": 1,
-      "nombreAlbum": 1,
-      "anioPublicacion": 1,
-      "estadoAlbum": 1
-     
+      "_id":1,
+      "nombreCancion": 1,
+      "fechaGrabacion": 1,
+      "duracionCancion": 1,
+      "estadoCancion": 1
     });;
     res.status(200).json(cancion);
   } catch (error) {
@@ -24,14 +24,14 @@ exports.obtenerid = async (req, res) => {
       const id = req.params.id;
       const cancion = await Cancion.findById(id).populate('album',{
 
-        "_id": 1,
-        "nombreAlbum": 1,
-        "anioPublicacion": 1,
-        "estadoAlbum": 1
+      "_id":1,
+      "nombreCancion": 1,
+      "fechaGrabacion": 1,
+      "duracionCancion": 1,
+      "estadoCancion": 1
 
-      });
+      });;
       res.status(200).json(cancion);
-
     } catch (error) {
       res.status(500).json(error)
     }
@@ -41,18 +41,49 @@ exports.obtenerid = async (req, res) => {
   //registrar
   exports.add = async (req, res) => {
     try {
-    const nCancion = new Cancion(req.body,req.file)
-    console.log(req.file);
+  //crea constantes que suspongo que son para utilizarlas y mostralas en la vista
+      const {
+        _id,
+        nombreCancion,
+        fechaGrabacion,
+        duracionCancion,
+        estadoCancion,
+        albumId
 
-    await nCancion.save();
-    
-    console.log(nCancion);
-    
-    res.json({ msj: "la cancion se registro exitosamente", id: nCancion._id })
-  } 
-  catch (error) {
-    res.status(500).json({msj:"Error al registrar "+error})
-  }
+     } = new req.body;
+     //console.log(req.file);
+
+
+     //tae desde el modelo los id y hace una consulta por id
+     const album=await Album.findById(albumId);
+     console.log(album._id);
+
+
+     const nCancion = new Cancion({
+      _id,
+      nombreCancion,
+      fechaGrabacion,
+      duracionCancion,
+      estadoCancion,
+      albumId: album._id    
+       
+     })
+     
+     try{
+       const saveCancion=await nCancion.save();
+       album.cancion=album.cancion.concat(saveCancion._id);
+       await album.save();
+
+       console.log(saveCancion)
+       res.status(200).json(saveCancion);
+       //segundo try
+     }catch (error) {
+       res.status(500).json({msj:"Error al registrar"+error})
+     }
+//catch del primer try
+   } catch (error) {
+      res.status(500).json({msj:"Error al registrar"+error})
+    }
   
   }
 

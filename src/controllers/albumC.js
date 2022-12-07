@@ -38,18 +38,47 @@ exports.obtenerid = async (req, res) => {
 
   //registrar
   exports.add = async (req, res) => {
+    //try grande con el genero y el registro del album
     try {
-      const nAlbum = new Album(req.body,req.file)
-      console.log(req.file);
   
-      await nAlbum.save();
+        const {
+      _id,
+      nombreAlbum,
+      anioPublicacion,
+      estadoAlbum,
+      generoId
+      } = new req.body;
+      //console.log(req.file);
+      const genero=await Genero.findById(generoId);
+      console.log(genero._id);
+
+      const nAlbum = new Album({
+      _id,
+      nombreAlbum,
+      anioPublicacion,
+      estadoAlbum,
+      genero: genero._id
+        
+      }) //termina genrro
       
-      console.log(nAlbum);
-      
-      res.json({ msj: "el album se registro exitosamente", id: nAlbum._id })
-    } 
-    catch (error) {
-      res.status(500).json({msj:"Error al registrar "+error})
+      //registro de album
+      try{
+        const saveAlbum=await nAlbum.save();
+        genero.album=genero.album.concat(saveAlbum._id);
+        await genero.save();
+
+        console.log(saveAlbum);
+        res.status(200).json(saveAlbum);
+      }catch (error) {
+        res.status(500).json({msj:"Error al registrar"+error})
+      }
+
+
+
+
+      //res.json({ msj: "Usuario registrado exitosamente", id: nAlbum._id })
+    } catch (error) {
+      res.status(500).json({msj:"Error al registrar"+error})
     }
   
   }

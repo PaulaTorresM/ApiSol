@@ -1,5 +1,4 @@
 const Album = require("../models/album");
-const Genero = require("../models/genero");
 
 
 //
@@ -7,7 +6,7 @@ exports.obtener = async (req, res) => {
   try {
     const album = await Album.find().populate('genero',{
 
-    "_id":1,
+   
     "nombreGenero": 1,
     "estadoGenero": 1
 
@@ -24,7 +23,6 @@ exports.obtenerid = async (req, res) => {
       const id = req.params.id;
       const album = await Album.findById(id).populate('genero',{
 
-      "_id":1,
       "nombreGenero": 1,
       "estadoGenero": 1
   

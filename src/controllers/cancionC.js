@@ -1,12 +1,12 @@
 const Cancion = require("../models/cancion");
-const Album = require("../models/album");
+
 const jwt=require("jsonwebtoken");
 
 exports.obtener = async (req, res) => {
   try {
     const cancion = await Cancion.find().populate('album',{
 
-      "_id":1,
+
       "nombreAlbum": 1,
       "anioPublicacion": 1,
       "estadoAlbum": 1
@@ -23,7 +23,7 @@ exports.obtenerid = async (req, res) => {
       const id = req.params.id;
       const cancion = await Cancion.findById(id).populate('album',{
 
-        "_id":1,
+   
         "nombreAlbum": 1,
         "anioPublicacion": 1,
         "estadoAlbum": 1

@@ -6,11 +6,10 @@ exports.obtener = async (req, res) => {
   try {
     const cancion = await Cancion.find().populate('album',{
 
-
       "nombreAlbum": 1,
       "anioPublicacion": 1,
       "estadoAlbum": 1
-    });;
+    });
     res.status(200).json(cancion);
   } catch (error) {
     res.status(500).json(error)
@@ -28,7 +27,7 @@ exports.obtenerid = async (req, res) => {
         "anioPublicacion": 1,
         "estadoAlbum": 1
 
-      });;
+      });
       res.status(200).json(cancion);
     } catch (error) {
       res.status(500).json(error)

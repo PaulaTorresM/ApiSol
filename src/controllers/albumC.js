@@ -6,7 +6,7 @@ exports.obtener = async (req, res) => {
   try {
     const album = await Album.find().populate('genero',{
 
-   
+    "_id":1,  
     "nombreGenero": 1,
     "estadoGenero": 1
 
